@@ -1,3 +1,23 @@
-.pyc
-.png
-.pdf
+# Python
+*.pyc
+__pycache__/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Images
+*.png
+
+# Documents
+*.pdf
+
+# Data
+data/*
+!data/.gitkeep
+
+
+# MacOS
+.DS_Store
+
+# VsCode
+.vscode/

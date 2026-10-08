@@ -17,20 +17,20 @@ GwyFile from classes.py was copied over so that the class could be imported in e
 TODO: Do the same for CypherFile, and use classes to do relative imports of the different classes in case one wants to import all of them. 
 """
 
-def find_key(keywords: dict, title: str) -> str:
-        """
-        Finds the key in the keywords dictionary based on channel title.
-        Universal function for all classes.
-        """
+def find_key(dictionary: dict, title: str, key_type: str = "key") -> str:
+    """
+    Finds the key in a dictionary based on channel title.
+    Universal function for all classes.
+    """
 
-        for key, elems in keywords.items():
-            for elem in elems:
-                match = re.search(elem, title)
-                if match is not None:
-                    return key
-                
-        print(title, "not found in keywords dictionary.")
-        return None
+    for key, elems in dictionary.items():
+        for elem in elems:
+            match = re.search(elem, title)
+            if match is not None:
+                return key
+
+    print(f"    {title} key not found in {key_type} dictionary. Keys tried: {list(dictionary.keys())}")
+    return None
 
 
 
@@ -86,9 +86,6 @@ class GwyFile:
             Converts the original index to the index of the channel list.
         index_metadata:
             Returns the metadata of a channel based on index; original index if name is True (default), else based on nth element in channel_names.
-        
-
-
         
     """
 
@@ -154,15 +151,17 @@ class GwyFile:
             with h5py.File(self.opath, "r") as f:
                 self.channel_names = np.array(f["channel_names"], dtype=str) #list(np.array(f["channel_names"], dtype="S")) #TODO: Stored as bytes. Issue?
                 # print(self.channel_names)
+            print(f"{self.filename}.gwy")
             print("H5 Structure exists.")
         except:
 
             self.channel_names = []
             print("Convert to hdf5.")
         finally:
-            print("Channels found: ")
+            print("Channels:")
             for channel in self.channel_names:
-                print(channel)
+                print(f"    {channel}")
+            print("\n")
     
     def __call__(self):
         """
@@ -174,7 +173,8 @@ class GwyFile:
 
 
         self.channel_names = []
-        print("Channels found: ")
+        print(f"\n{self.filename}.gwy")
+        print("Channels:")
 
         with h5py.File(self.opath, "w") as f:
             
@@ -183,11 +183,11 @@ class GwyFile:
                 if "Optical" in key:
                     continue 
                 
-                category = str(find_key(GwyFile.keywords, key))
-                mode = str(find_key(GwyFile.modes, key))
+                category = str(find_key(GwyFile.keywords, key, key_type="keyword"))
+                mode = str(find_key(GwyFile.modes, key, key_type="mode"))
                 unique = str(id) 
 
-                name = f"{category}_{mode}_{unique}"
+                name = f"    {category}_{mode}_{unique}"
                 self.channel_names.append(name)
                 print(name)
                                 

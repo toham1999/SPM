@@ -30,7 +30,7 @@ def add_scalebar(ax, res, **kwargs):
             "location": 4,
             "frameon": True,
             "box_color" :"black",
-            "box_alpha" : 0.45,
+            "box_alpha" : 0.55,
             "scale_loc": "bottom",
             "length_fraction":0.35,
             "width_fraction": 0.01,
@@ -52,7 +52,7 @@ def add_scalebar(ax, res, **kwargs):
             "location": 4,
             "frameon": True,
             "box_color" :"black",
-            "box_alpha" : 0.45,
+            "box_alpha" : 0.55,
             "scale_loc": "bottom",
             "length_fraction":0.35,
             "width_fraction": 0.01,
@@ -281,13 +281,12 @@ def add_alphabetic_label(ax, letter, **kwargs):
 
     text = ax.text(alpha_kwargs["position"][0],alpha_kwargs["position"][1], formatter[alpha_kwargs["formatter"]](letter), horizontalalignment=alpha_kwargs["horizontalalignment"], verticalalignment=alpha_kwargs["verticalalignment"], size= alpha_kwargs["size"], color=alpha_kwargs["color"], transform=ax.transAxes, bbox=dict(facecolor=alpha_kwargs["box_color"], alpha=alpha_kwargs["box_alpha"], edgecolor="none", pad=alpha_kwargs["pad"]))
     bbox = text.get_window_extent().transformed(ax.transAxes.inverted())
-
+    
     #TODO: Do not dare to touch this too much. 
     
     return ax
 
 
-#TODO: Believe it works nicely? Improve some things?
 def add_colorbar(ax, mappable, **kwargs):
 
     """
